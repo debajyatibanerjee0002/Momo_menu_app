@@ -6,7 +6,36 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  AnimationController animController;
+  Animation carouselAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    animController =
+        AnimationController(duration: Duration(seconds: 20), vsync: this);
+    // carouselAnimation =
+    //     IntTween(begin: 0, end: photos.length - 1).animate(animController);
+    carouselAnimation =
+        IntTween(begin: 0, end: photos.length - 1).animate(animController)
+          ..addListener(() {
+            //cascade operator
+            setState(() {
+              photoIndex = carouselAnimation.value;
+            });
+          });
+
+    animController.repeat();
+  }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   animController.dispose();
+  // }
+
   int photoIndex = 0;
   List<String> photos = [
     'assets/momo1.jpg',
@@ -14,17 +43,17 @@ class _HomePageState extends State<HomePage> {
     'assets/momo3.jpg',
     'assets/momo4.jpg',
   ];
-  void _previousImage() {
-    setState(() {
-      photoIndex = photoIndex > 0 ? photoIndex - 1 : 0;
-    });
-  }
+  // void _previousImage() {
+  //   setState(() {
+  //     photoIndex = photoIndex > 0 ? photoIndex - 1 : 0;
+  //   });
+  // }
 
-  void _nextImage() {
-    setState(() {
-      photoIndex = photoIndex < photos.length - 1 ? photoIndex + 1 : photoIndex;
-    });
-  }
+  // void _nextImage() {
+  //   setState(() {
+  //     photoIndex = photoIndex < photos.length - 1 ? photoIndex + 1 : photoIndex;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +70,12 @@ class _HomePageState extends State<HomePage> {
                     margin: EdgeInsets.only(bottom: 26),
                     height: 210.0,
                     decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 15,
+                          color: Colors.grey[700],
+                        ),
+                      ],
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(130),
                         // bottomRight: Radius.circular(30),
@@ -71,22 +106,22 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    child: Container(
-                      height: 210.0,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.transparent,
-                    ),
-                    onTap: _nextImage,
-                  ),
-                  GestureDetector(
-                    child: Container(
-                      height: 210.0,
-                      width: MediaQuery.of(context).size.width / 2,
-                      color: Colors.transparent,
-                    ),
-                    onTap: _previousImage,
-                  ),
+                  // GestureDetector(
+                  //   child: Container(
+                  //     height: 210.0,
+                  //     width: MediaQuery.of(context).size.width,
+                  //     color: Colors.transparent,
+                  //   ),
+                  //   onTap: _nextImage,
+                  // ),
+                  // GestureDetector(
+                  //   child: Container(
+                  //     height: 210.0,
+                  //     width: MediaQuery.of(context).size.width / 2,
+                  //     color: Colors.transparent,
+                  //   ),
+                  //   onTap: _previousImage,
+                  // ),
                   Positioned(
                     top: 183.0,
                     left: 150.0,
@@ -209,15 +244,15 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      _buildListItemNew(photos[photoIndex]),
+                      _buildListItemNew(photos[0]),
                       SizedBox(height: 5),
-                      _buildListItemNew(photos[photoIndex]),
+                      _buildListItemNew(photos[1]),
                       SizedBox(height: 5),
-                      _buildListItemNew(photos[photoIndex]),
+                      _buildListItemNew(photos[2]),
                       SizedBox(height: 5),
-                      _buildListItemNew(photos[photoIndex]),
+                      _buildListItemNew(photos[3]),
                       SizedBox(height: 5),
-                      _buildListItemNew(photos[photoIndex]),
+                      _buildListItemNew(photos[0]),
                     ],
                   ),
                 ),
@@ -246,31 +281,31 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget _buildListItem(String picture) {
-  return Column(
-    children: [
-      Row(
-        children: [
-          Container(
-            height: 100,
-            width: 100,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              ),
-              image: DecorationImage(
-                image: AssetImage(picture),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ],
-      ),
-    ],
-  );
-}
+// Widget _buildListItem(String picture) {
+//   return Column(
+//     children: [
+//       Row(
+//         children: [
+//           Container(
+//             height: 100,
+//             width: 100,
+//             decoration: BoxDecoration(
+//               color: Colors.white,
+//               borderRadius: BorderRadius.only(
+//                 topRight: Radius.circular(10),
+//                 bottomRight: Radius.circular(10),
+//               ),
+//               image: DecorationImage(
+//                 image: AssetImage(picture),
+//                 fit: BoxFit.cover,
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     ],
+//   );
+// }
 
 Widget _buildListItemNew(String picture) {
   return ListTile(

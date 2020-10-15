@@ -27,7 +27,7 @@ class SelectedPhoto extends StatelessWidget {
         padding: const EdgeInsets.only(left: 5.0, right: 5.0),
         child: Container(
           height: 10.0,
-          width: 10.0,
+          width: 15.0,
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
